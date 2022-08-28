@@ -2,12 +2,26 @@ terraform {
   required_providers {
     docker = {
       source  = "registry.terraform.io/kreuzwerker/docker"
-      version = "~> 2.13.0"
+      version = "~> 2.20.2"
     }
   }
 }
 
+# The default provider configuration
+# If the "alias" property is unset, then Terraform assumes
+# that this is the default provider to use.
 provider "docker" {}
+
+# An alternate provider configuration
+# A resource needs to explicitly specify a "provider" property
+# to indicate it needs to use this alternate provider config.
+# Terraform interprets the first word of the resource type as
+# local provider name ("docker_image" => "docker"). If the resource
+# does not specify a provider property, Terraform assumes to use
+# the default provider configuration.
+provider "docker" {
+  alias = "local_registry"
+}
 
 resource "docker_image" "nginx" {
   name         = "nginx:latest"
