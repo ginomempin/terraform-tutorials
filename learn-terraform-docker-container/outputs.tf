@@ -1,16 +1,11 @@
-output "image_id" {
-  description = "ID of the Docker image"
-  value       = docker_image.nginx.id
+output "container_image" {
+  description = "IP of the Docker container"
+  value       = docker_container.nginx.image
 }
 
 output "container_id_and_name" {
   description = "ID of the Docker container"
   value       = "${docker_container.nginx.id}:${docker_container.nginx.name}"
-}
-
-output "container_image" {
-  description = "IP of the Docker container"
-  value       = docker_container.nginx.image
 }
 
 output "container_user" {

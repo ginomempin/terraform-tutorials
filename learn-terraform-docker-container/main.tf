@@ -23,13 +23,18 @@ provider "docker" {
   alias = "local_registry"
 }
 
+data "docker_registry_image" "nginx" {
+  name = "nginx:latest"
+}
+
 resource "docker_image" "nginx" {
-  name         = "nginx:latest"
-  keep_locally = false
+  name          = data.docker_registry_image.nginx.name
+  pull_triggers = [data.docker_registry_image.nginx.sha256_digest]
+  keep_locally  = true
 }
 
 resource "docker_container" "nginx" {
-  image = docker_image.nginx.latest
+  image = docker_image.nginx.repo_digest
   name  = var.container_name
 
   privileged = var.privileged
